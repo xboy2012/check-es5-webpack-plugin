@@ -24,7 +24,7 @@ module.exports = class CheckES5WebpackPlugin {
     compiler.hooks.emit.tapPromise(PLUGIN_NAME, async compilation => {
       const assets = compilation.assets;
       const assetsFiles = Object.keys(assets).filter(fileName => fileName.endsWith('.js'));
-      const errorJsFiles = assetsFiles.filter(fileName => check(assets[fileName]));
+      const errorJsFiles = assetsFiles.filter(fileName => !check(assets[fileName]));
 
       if (!errorJsFiles.length) {
         log(colors.green(`All js files are ES5 compatible.`));
