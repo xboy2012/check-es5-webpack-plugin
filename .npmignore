@@ -1,0 +1,6 @@
+.idea
+.DS_Store
+*.log
+coverage
+node_modules
+/.babelrc
