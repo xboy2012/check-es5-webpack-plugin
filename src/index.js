@@ -1,5 +1,5 @@
 const acorn = require('acorn')
-const colors = require('colors')
+const colors = require('colors/safe')
 
 const check = (fileName, source) => {
   const code = source.source()
@@ -9,7 +9,7 @@ const check = (fileName, source) => {
     });
     return true;
   } catch (e) {
-    console.error(colors.error(`File ${fileName} is not ES5 compatible`));
+    console.log(colors.error(`File ${fileName} is not ES5 compatible`));
     throw Error(`File ${fileName} is not ES5 compatible`);
   }
 }
