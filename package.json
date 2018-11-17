@@ -1,6 +1,6 @@
 {
   "name": "check-es5-webpack-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Checks whether the output js is ES5 compatible",
   "main": "src/index.js",
   "scripts": {},

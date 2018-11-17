@@ -9,7 +9,7 @@ const check = (fileName, source) => {
     });
     return true;
   } catch (e) {
-    console.log(colors.error(`File ${fileName} is not ES5 compatible`));
+    console.error(colors.error(`File ${fileName} is not ES5 compatible`));
     throw Error(`File ${fileName} is not ES5 compatible`);
   }
 }
