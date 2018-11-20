@@ -46,9 +46,6 @@ const checkSpawn = async (source) => {
   await fs.outputFile(fileName, code);
   const isValid = await new Promise((resolve, reject) => {
     const ls = spawn(`${acornBin}`, [ fileName, '--ecma5', '--silent' ]);
-    ls.stderr.on('data', () => {
-      reject(Error());
-    });
     ls.on('close', (code) => {
       resolve(!code);
     });
@@ -72,7 +69,7 @@ module.exports = class CheckES5WebpackPlugin {
       const checkFn = this.opts.spawn ? checkSpawn :  check;
 
       const promises = assetsFiles.map(async fileName => {
-        log(colors.bgYellow(`Checking whether \`${fileName}\` is ES5 compatible...`));
+        log(colors.yellow(`Checking whether \`${fileName}\` is ES5 compatible...`));
         const isValid = await checkFn(assets[fileName]);
         if (!isValid) {
           log(colors.red(` \`${fileName}\` is not ES5 compatible.`));
