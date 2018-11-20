@@ -72,7 +72,12 @@ module.exports = class CheckES5WebpackPlugin {
       const checkFn = this.opts.spawn ? checkSpawn :  check;
 
       const promises = assetsFiles.map(async fileName => {
-        return [fileName, await checkFn(assets[fileName])];
+        log(colors.bgYellow(`Checking whether \`${fileName}\` is ES5 compatible...`));
+        const isValid = await checkFn(assets[fileName]);
+        if (!isValid) {
+          log(colors.red(` \`${fileName}\` is not ES5 compatible.`));
+        }
+        return [fileName, isValid];
       });
       const arr = await Promise.all(promises)
       const errorJsFiles = arr.filter(([fileName, isValid]) => !isValid).map(([fileName]) => fileName)
@@ -80,10 +85,6 @@ module.exports = class CheckES5WebpackPlugin {
       if (!errorJsFiles.length) {
         log(colors.green(`All js files are ES5 compatible.`));
         return;
-      }
-
-      for (let fileName of errorJsFiles) {
-        log(colors.red(` \`${fileName}\` is not ES5 compatible.`));
       }
       throw Error('Some js files are not ES5 compatible.');
     })
