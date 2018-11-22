@@ -1,11 +1,10 @@
-const acorn = require('acorn');
-const colors = require('colors/safe');
-const tempy = require('tempy');
-const fs = require('fs-extra');
-const { spawn } = require('child_process');
-const path = require('path');
+import * as acorn from 'acorn'
+import * as colors from 'colors/safe'
+import tempy from 'tempy'
+import fs from 'fs-extra'
+import { spawn } from 'child_process'
 
-const acornBin = path.resolve(__dirname, '../node_modules/acorn/bin/acorn');
+const acornBin = require.resolve('acorn/bin/acorn');
 
 const PLUGIN_NAME = 'CheckES5WebpackPlugin';
 
@@ -54,7 +53,7 @@ const checkSpawn = async (source) => {
   return isValid;
 }
 
-module.exports = class CheckES5WebpackPlugin {
+export default class CheckES5WebpackPlugin {
   constructor (opts) {
     opts = opts || {}
     const spawn = ('spawn' in opts) ? !!opts.spawn : true;

@@ -2,8 +2,12 @@
   "name": "check-es5-webpack-plugin",
   "version": "1.0.8",
   "description": "Checks whether the output js is ES5 compatible",
-  "main": "src/index.js",
+  "main": "commonjs/es5/index.js",
+  "module": "module/es5/index.js",
+  "jsnext:main": "module/es7/index.js",
   "scripts": {
+    "build": "babel-node src/build/index.js",
+    "prepublish": "npm run build",
     "sync": "curl -H \"x-force-sync: true\" -s  http://npm.caimi-inc.com/check-es5-webpack-plugin"
   },
   "repository": {
@@ -24,5 +28,13 @@
   },
   "peerDependencies": {
     "webpack": ">= 2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.6",
+    "rollup": "^0.67.3",
+    "rollup-plugin-babel": "^4.0.3"
   }
 }

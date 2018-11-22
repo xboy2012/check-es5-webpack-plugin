@@ -3,4 +3,7 @@
 *.log
 coverage
 node_modules
+.editorconfig
+.gitignore
 /.babelrc
+/src
