@@ -3,7 +3,6 @@ import * as colors from 'colors/safe'
 import tempy from 'tempy'
 import fs from 'fs-extra'
 import { spawn } from 'child_process'
-import cache from './core/cache'
 
 const acornBin = require.resolve('acorn/bin/acorn');
 
@@ -28,20 +27,16 @@ const log = (msg) => {
   console.log(`[${PLUGIN_NAME}]${msg}`);
 }
 
-const withCache = (fn) => source => cache(source, fn)
-
 const check = async (source) => {
-  return cache(source, (source) => {
-    const code = source.source();
-    try {
-      acorn.parse(code, {
-        ecmaVersion: 5
-      });
-      return true;
-    } catch (e) {
-      return false;
-    }
-  })
+  const code = source.source();
+  try {
+    acorn.parse(code, {
+      ecmaVersion: 5
+    });
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 
 const checkSpawn = async (source) => {
@@ -62,8 +57,7 @@ export default class CheckES5WebpackPlugin {
   constructor (opts) {
     opts = opts || {}
     const spawn = ('spawn' in opts) ? !!opts.spawn : true;
-    const cache = ('cache' in opts) ? !!opts.cache : true;
-    this.opts = { spawn, cache };
+    this.opts = { spawn };
   }
 
   apply(compiler) {
@@ -72,9 +66,6 @@ export default class CheckES5WebpackPlugin {
       const assetsFiles = Object.keys(assets).filter(fileName => fileName.endsWith('.js'));
 
       let checkFn = this.opts.spawn ? checkSpawn : check;
-      if (this.opts.cache) {
-        checkFn = withCache(checkFn)
-      }
 
       const promises = assetsFiles.map(async fileName => {
         log(colors.yellow(`Checking whether \`${fileName}\` is ES5 compatible...`));
